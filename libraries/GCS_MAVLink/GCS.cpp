@@ -77,6 +77,37 @@ void GCS::send_textv(MAV_SEVERITY severity, const char *fmt, va_list arg_list)
     send_textv(severity, fmt, arg_list, mask);
 }
 
+void GCS_MAVLINK::send_fruit_status(float lat, float lon,
+    const char *fruit_type, const char *module_type,uint8_t conn_status
+    )
+{
+    if (!HAVE_PAYLOAD_SPACE(chan, FRUIT_STATUS)) {
+        return;
+    }
+    mavlink_msg_fruit_status_send(
+        lat,
+        lon,
+        fruit_type,
+        module_type,
+        conn_status
+    );
+}
+
+void GCS_MAVLINK::send_dog_walker_status(float lat, float lon,
+     const char *module_type,uint8_t conn_status
+    )
+{
+    if (!HAVE_PAYLOAD_SPACE(chan, DOG_WALKER_STATUS)) {
+        return;
+    }
+    mavlink_msg_dog_walker_status_send(
+        lat,
+        lon,
+        module_type,
+        conn_status
+    );
+}
+
 void GCS::send_text(MAV_SEVERITY severity, const char *fmt, ...)
 {
     va_list arg_list;
@@ -84,6 +115,8 @@ void GCS::send_text(MAV_SEVERITY severity, const char *fmt, ...)
     send_textv(severity, fmt, arg_list);
     va_end(arg_list);
 }
+
+
 
 void GCS::send_to_active_channels(uint32_t msgid, const char *pkt)
 {
@@ -108,6 +141,8 @@ void GCS::send_to_active_channels(uint32_t msgid, const char *pkt)
         c.send_message(pkt, entry);
     }
 }
+
+
 
 void GCS::send_named_float(const char *name, float value) const
 {

@@ -208,6 +208,7 @@ public:
     void        send_text(MAV_SEVERITY severity, const char *fmt, ...) const FMT_PRINTF(3, 4);
     void        queued_param_send();
     void        queued_mission_request_send();
+    
 
     bool sending_mavlink1() const;
 
@@ -224,6 +225,7 @@ public:
         // a single loop):
         return MIN(_port->txspace(), 8192U);
     }
+    
 
     bool check_payload_size(uint16_t max_payload_len);
 
@@ -244,6 +246,9 @@ public:
     // packetReceived is called on any successful decode of a mavlink message
     virtual void packetReceived(const mavlink_status_t &status,
                                 const mavlink_message_t &msg);
+
+
+    
 
     // send a mavlink_message_t out this GCS_MAVLINK connection.
     void send_message(uint32_t msgid, const char *pkt) {
@@ -391,6 +396,8 @@ public:
     virtual void send_attitude_target() {};
     virtual void send_position_target_global_int() { };
     virtual void send_position_target_local_ned() { };
+    void send_fruit_status(float lat, float lon, const char *fruit_type, const char *module_type,uint8_t conn_status,);
+    void send_dog_walker_status(float lat, float lon, const char *module_type,uint8_t conn_status,);
     void send_servo_output_raw();
     void send_accelcal_vehicle_position(uint32_t position);
     void send_scaled_imu(uint8_t instance, void (*send_fn)(mavlink_channel_t chan, uint32_t time_ms, int16_t xacc, int16_t yacc, int16_t zacc, int16_t xgyro, int16_t ygyro, int16_t zgyro, int16_t xmag, int16_t ymag, int16_t zmag, int16_t temperature));
